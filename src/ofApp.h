@@ -51,4 +51,9 @@ private:
     float moveX;
     float moveY;
     float moveZ;
+    ofFbo fbo;
+    
+    
+    
+    
 };

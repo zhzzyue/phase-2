@@ -4,7 +4,7 @@ vector<leaf> leaves;
 
 //ofPoint t;
 //ofPoint p0, p1;
-ofFbo fbo;
+//ofFbo fbo;
 
 leaf::leaf(){
 //    leafImg.load("leaf.png");
@@ -17,7 +17,8 @@ leaf::leaf(){
 }
 
 void leaf::setup(){
-    loc += ofPoint(0,0,0);
+
+    loc += ofPoint(ofGetWindowWidth()/2, ofGetWindowHeight()/2);
     sTime = ofRandom(0.1,2);
     sWeight = ofRandom(1, 1.5);
 //    fallSpeed = ofRandom(2, 8);
@@ -35,6 +36,12 @@ void leaf::setup(){
     ofClear(255,255,255,0);
     fbo.end();
     
+//    float alpha = ofMap(ofGetMouseX(), 0, ofGetWidth(), 0, 255);
+//    fbo.begin();
+//    ofSetColor(255,255,255, alpha);
+//    ofDrawRectangle(0,0,400,400);
+//    fbo.end();
+//    
     ofSetBackgroundColor(0,0,0);
 
 
@@ -43,19 +50,25 @@ void leaf::setup(){
 
 void leaf::update(){
     float time = sTime*ofGetElapsedTimef();
-    rX = ofSignedNoise(time * 0.5) * 400.0;  // rotate +- 400deg
-    rY = ofSignedNoise(time * 0.3) * 400.0;
-    rZ = ofSignedNoise(time * 0.9) * 400.0;
+    rX = ofSignedNoise(time * 0.5) * 200.0;  // rotate +- 400deg
+    rY = ofSignedNoise(time * 0.6) * 200.0;
+    rZ = ofSignedNoise(time * 0.7) * 200.0;
     dScale = (1 - ofNoise(time * 0.2)) * sWeight;
     //dScaleX = (1 - ofNoise(time * 0.2)) * sWeight;
     //dScaleY = (1 - ofNoise(time * 0.4)) * sWeight;
     //dScaleZ = (1 - ofNoise(time * 0.6)) * sWeight;
     
-    moveX= ofSignedNoise(time*a)*ofRandom(1,10);
-    moveY= ofSignedNoise(time*b)*ofRandom(1,10);
-    moveZ= ofSignedNoise(time*c)*ofRandom(1,10);
+    moveX= ofSignedNoise(time*a)*ofRandom(1,20);
+    moveY= ofSignedNoise(time*b)*ofRandom(1,20);
+    moveZ= ofSignedNoise(time*c)*ofRandom(1,20);
     
-    loc+= ofPoint(moveX, moveY,moveZ);
+    loc += ofPoint(moveX, moveY, moveZ);
+    
+    
+//        fbo.allocate(ofGetWindowWidth(),ofGetWindowHeight());
+//        fbo.begin();
+//        ofClear(255,255,255,0);
+//        fbo.end();
 
 }
 
@@ -72,6 +85,7 @@ void leaf::draw() {
 
 //    ofBackground(255);
     fbo.begin();
+    cout<<"hello world!"<<endl;
 //    ofPushStyle();
     ofSetColor(255,255,255, 10);  // alpha fade it
     ofDrawRectangle(0,0,ofGetWidth(),ofGetHeight());
@@ -87,12 +101,21 @@ void leaf::draw() {
     
     ofPushStyle();
     ofSetColor(color);
-    ofDrawLine(-20, 0, 20, 0);
+    ofFill();
+    
+    ofDrawLine(-40, 0, 40, 0);
+    ofDrawLine(40, 0, 0, 40);
+    ofDrawLine(0, 40, -40, 0);
+//    ofDrawCircle(150,150,20);
+//    ofSetColor(color);
+//    ofFill();
+//    ofDrawSphere(ofGetWidth() * .1, ofGetHeight()* .1, 10);
     ofPopStyle();
     ofPopMatrix();
     fbo.end();
     ofSetColor(255);
     fbo.draw(0,0);
+    
 }
 
 //ofTrueTypeFont title;
